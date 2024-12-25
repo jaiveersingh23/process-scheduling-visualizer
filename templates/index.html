@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Scheduling Visualizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Process Scheduling Visualizer</h1>
+    
+    <form method="POST">
+        <label for="num_processes">Number of Processes:</label>
+        <input type="number" id="num_processes" name="num_processes" required>
+        
+        <div id="processes">
+            <!-- Process input fields will be injected here -->
+        </div>
+
+        <label for="algorithm">Choose Scheduling Algorithm:</label>
+        <select name="algorithm" id="algorithm" required>
+            <option value="FCFS">FCFS</option>
+            <option value="SJF">SJF</option>
+            <option value="RoundRobin">Round Robin</option>
+        </select>
+        
+        <label for="time_quantum">Time Quantum (Only for Round Robin):</label>
+        <input type="number" id="time_quantum" name="time_quantum" disabled>
+
+        <button type="submit">Visualize</button>
+    </form>
+
+    {% if result %}
+    <h2>Results for {{ algorithm }}:</h2>
+    <div>
+        <h3>Gantt Chart:</h3>
+        <pre>{{ result['gantt_chart'] }}</pre>
+        <h3>Waiting Times:</h3>
+        <pre>{{ result['waiting_times'] }}</pre>
+        <h3>Turnaround Times:</h3>
+        <pre>{{ result['turnaround_times'] }}</pre>
+    </div>
+    {% endif %}
+    
+    <script>
+        document.getElementById('num_processes').addEventListener('input', function() {
+            const numProcesses = this.value;
+            const processesDiv = document.getElementById('processes');
+            processesDiv.innerHTML = '';
+            
+            for (let i = 0; i < numProcesses; i++) {
+                processesDiv.innerHTML += `
+                    <label for="arrival_time_${i}">Arrival Time of Process ${i+1}:</label>
+                    <input type="number" id="arrival_time_${i}" name="arrival_time_${i}" required>
+                    <label for="burst_time_${i}">Burst Time of Process ${i+1}:</label>
+                    <input type="number" id="burst_time_${i}" name="burst_time_${i}" required>
+                `;
+            }
+        });
+
+        document.getElementById('algorithm').addEventListener('change', function() {
+            if (this.value === 'RoundRobin') {
+                document.getElementById('time_quantum').disabled = false;
+            } else {
+                document.getElementById('time_quantum').disabled = true;
+            }
+        });
+    </script>
+</body>
+</html>
