@@ -17,7 +17,7 @@ Users can input processes with their arrival and burst times and see the resulti
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/process-scheduling-visualizer.git
+    git clone https://github.com/jaiveersingh23/process-scheduling-visualizer.git
     ```
 
 2. Navigate to the project directory:
